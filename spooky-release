@@ -1,0 +1,76 @@
+#!/bin/bash
+
+script=https://cdn.spooky.click/spooky-release/0.0.3/cmd.js
+
+usage() {
+  program_name=$(basename $0)
+	bold=$(tput bold)
+	normal=$(tput sgr0)
+
+    cat <<EOM
+    Usage: $program_name --pkg name --version 1.0.0 --files readme.md
+
+    Create a tagged release for a package.
+
+    Arguments:
+    	${bold}-p name${normal}			The name of the package to bump. This will be
+				used to replace URLs in documentation.
+    	${bold}-v 1.0.0${normal}		The version of the package.
+    	${bold}-f [...names]${normal}		A space-separated list of files to update
+				the documentation for.
+    Options:
+    	-h			Display this help message.
+    Examples:
+    	Publish spooky-release
+    		$ $program_name -p spooky-release -v 1.0.0 -f readme.md
+EOM
+    exit 0
+}
+
+test=0
+
+while getopts "hp:v:f:t" opt; do
+	case ${opt} in
+		h )
+			usage;
+			;;
+		p )
+			pkg="${OPTARG}"
+			;;
+		v )
+			version="${OPTARG}"
+			;;
+		f )
+			files+=("$OPTARG")
+			;;
+		t )
+			test=1
+			;;
+		\? )
+			echo "Invalid option -${OPTARG}"
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND -1))
+
+if [ -z "$pkg" ] || [ -z "$version" ]
+then
+	echo "    Must provide a package name and version."
+	echo ""
+	usage;
+fi
+
+filestr=""
+for val in "${files[@]}"; do
+		filestr+=" --files $val"
+done
+
+if [ "$test" -eq 1 ]
+then
+	echo "deno run --allow-read --allow-write --allow-run $script --pkg $pkg --version $version$filestr"
+else
+	deno run --allow-read --allow-write --allow-run \
+		$script \
+		--pkg $pkg --version $version$filestr
+fi
