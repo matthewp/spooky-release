@@ -8,7 +8,7 @@ usage() {
 	normal=$(tput sgr0)
 
     cat <<EOM
-    Usage: $program_name --pkg name --version 1.0.0 --files readme.md
+    Usage: $program_name -p name -v 1.0.0 -f readme.md
 
     Create a tagged release for a package.
 
