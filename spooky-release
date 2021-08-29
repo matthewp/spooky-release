@@ -1,6 +1,6 @@
 #!/bin/bash
 
-script=https://cdn.spooky.click/spooky-release/0.0.3/cmd.js
+script=https://cdn.spooky.click/spooky-release/0.0.5/cmd.js
 
 usage() {
   program_name=$(basename $0)
