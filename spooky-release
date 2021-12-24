@@ -46,6 +46,7 @@ while getopts "hp:v:f:t" opt; do
 			;;
 		d )
 			domain="${OPTARG}"
+			;;
 		t )
 			test=1
 			;;
