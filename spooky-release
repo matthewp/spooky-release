@@ -28,6 +28,7 @@ EOM
 }
 
 test=0
+domain="cdn.spooky.click"
 
 while getopts "hp:v:f:t" opt; do
 	case ${opt} in
@@ -43,6 +44,8 @@ while getopts "hp:v:f:t" opt; do
 		f )
 			files+=("$OPTARG")
 			;;
+		d )
+			domain="${OPTARG}"
 		t )
 			test=1
 			;;
@@ -68,9 +71,9 @@ done
 
 if [ "$test" -eq 1 ]
 then
-	echo "deno run --allow-read --allow-write --allow-run $script --pkg $pkg --version $version$filestr"
+	echo "deno run --allow-read --allow-write --allow-run $script --pkg $pkg --version $version$filestr --domain $domain"
 else
 	deno run --allow-read --allow-write --allow-run \
 		$script \
-		--pkg $pkg --version $version$filestr
+		--pkg $pkg --version $version$filestr --domain $domain
 fi
